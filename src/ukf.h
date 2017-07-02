@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "tools.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -31,8 +32,8 @@ public:
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
 
-  ///* time when the state is true, in us
-  long long time_us_;
+  ///* time when the state is true
+  long long previous_timestamp_;
 
   ///* Process noise standard deviation longitudinal acceleration in m/s^2
   double std_a_;
@@ -64,8 +65,29 @@ public:
   ///* Augmented state dimension
   int n_aug_;
 
-  ///* Sigma point spreading parameter
+  ///* number of sigma points
+  int n_sig_;
+
+  ///* Dim Radar Measurement
+  int n_z_; 
+
+  ///* sigma point spreading parameter
   double lambda_;
+
+  ///* current Normalized innovation squared (NIS) for radar
+  double NIS_radar_;
+
+  ///* current NIS for laser
+  double NIS_laser_;
+  
+  ///* radar measurement noise covariance matrix
+  MatrixXd R_radar_;
+  
+  ///* lidar measurement noise covariance matrix
+  MatrixXd R_lidar_;
+
+
+  MatrixXd Xsig_aug;
 
 
   /**
@@ -77,6 +99,11 @@ public:
    * Destructor
    */
   virtual ~UKF();
+
+  /**
+   *  Angle normalization to [-Pi, Pi]
+   */
+void NormalizeAngle(double *angle); //-----------------------xdiff3
 
   /**
    * ProcessMeasurement
@@ -102,6 +129,9 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+  // update state and state covariance matrix of UKF
+  void UpdateUKF(MeasurementPackage meas_package, MatrixXd Zsig, int n_z);
 };
 
 #endif /* UKF_H */
