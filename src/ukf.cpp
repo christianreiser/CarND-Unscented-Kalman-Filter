@@ -6,8 +6,6 @@
 #include "tools.h"
 #include <iostream>
 
-#define EPS 0.001	//smallest allowed meansurement
-
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -99,6 +97,7 @@ void UKF::NormalizeAngle(double *angle) {
  * @param {MeasurementPackage} meas_package The latest measurement data of
  * either radar or laser.
  */
+#define EPS 0.001	//smallest allowed meansurement
 void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   // x_ = [px, py, velocity, angle, angle_rate] (CTRV Model)
   if (!is_initialized_) {
