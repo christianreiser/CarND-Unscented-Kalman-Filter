@@ -69,7 +69,10 @@ public:
   int n_sig_;
 
   ///* Dim Radar Measurement
-  int n_z_; 
+  int n_zr_; 
+
+  ///* Dim Radar Measurement
+  int n_zl_; 
 
   ///* sigma point spreading parameter
   double lambda_;
